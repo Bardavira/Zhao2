@@ -66,7 +66,7 @@ void problem2 (){
   readArray (arrayN, tamN);
   printf ("as well as the other %d numbers of the second array:\n", tamM);
   readArray (arrayM, tamM);
-
+/*here lies the problem */
   cleanArray (arrayN, &tamN);
   cleanArray (arrayM, &tamM); 
 
