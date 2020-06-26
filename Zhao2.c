@@ -8,57 +8,9 @@ void readArray (int *array, int tamAr){
   }
 }
 
-int nOfSharedValues (int *arrayA, int *arrayB, int tamA, int tamB){
-  int i, j, k = 0;
-  for (i = 0; i < tamA; i++){
-    for (j = 0; j < tamB; j++){
-      if (arrayA[i] == arrayB[j]){
-        k++;
-        break;
-      }
-    }
-  }
-  return k;
-}
-
-void cleanArray (int *array, int *tamA){
-  int *arrayI = (int *) malloc (*tamA), i, j, k = 0;
-  for (i = 0; i < *tamA; i++){
-    for (j = 0; j <= k; j++){
-      if (i == 0){
-        *(arrayI) = *(array + i);
-        k++;
-      } else if (j == k && k < *tamA){
-        *(arrayI + j) = *(array + i);
-        k++;
-      } else if (*(array + i) == *(arrayI + j)){
-        break;
-      }
-    }
-  }
-  printf ("teste2");
-  array = (int *) realloc (array, (k+1) * sizeof(int));
-  for (i = 0; i <= k; i++){
-    *(array + i) = *(arrayI + i);
-  }
-  *tamA=k+1;
-}
-
-void intersectArrays (int *arrayA, int *arrayB, int *arrayI, int tamA, int tamB){
-  int i, j, k = 0;
-  for (i = 0; i < tamA; i++){
-    for (j = 0; j < tamB; j++){
-      if (arrayA[i] = arrayB[j]){
-        arrayI[k] = arrayA[i];
-        k++;
-      }
-    }
-  }
-}
-
 void problem2 (){
   printf ("Please insert how many numbers will array 'n' and 'm' contain:\n");
-  int tamN, tamM;
+  int tamN, tamM,i;
   scanf ("%d", &tamN);
   scanf ("%d", &tamM);
   int *arrayN = (int *) malloc (tamN * sizeof (int)), *arrayM = (int *) malloc (tamM * sizeof (int));
@@ -66,19 +18,34 @@ void problem2 (){
   readArray (arrayN, tamN);
   printf ("as well as the other %d numbers of the second array:\n", tamM);
   readArray (arrayM, tamM);
-/*here lies the problem */
-  cleanArray (arrayN, &tamN);
-  cleanArray (arrayM, &tamM); 
-
-  int tamDef = nOfSharedValues (arrayN, arrayM, tamN, tamM);
+  int tamDef = (tamN > tamM)? tamM: tamN;
   int *arrayDef = malloc (tamDef * sizeof(int));
-  intersectArrays (arrayN, arrayM, arrayDef, tamN, tamM);
-  printf ("The intersecton array is I = [");
-  int count;
-  for (count = 0; count < tamDef; count++){
-    printf("%d, ", arrayDef[count]);
+  int j, k, found, count = 0;
+  for(i=0; i< tamN; i++){
+    for(j=0; j< tamM; j++){
+      if(arrayN[i] == arrayM[j]){
+        found = 0;
+        for(k=0; k< count; k++){
+          if(arrayDef[k] == arrayN[i]){
+            found = 1;
+            break;
+          }
+        }
+        if(found == 0){
+          arrayDef[count] = arrayN[i];
+          count++;
+        }
+      }
+    }
   }
-  printf("]\n");
+  printf ("The intersecton array is I = [");
+  for (k = 0; k < count-1; k++){
+    printf("%d, ", arrayDef[k]);
+  }
+  printf("%d]\n",arrayDef[count-1]);
+  free(arrayN);
+  free(arrayM);
+  free(arrayDef); 
 }
 
 int findSubString (char *strA, char *strB, int A, int B){
